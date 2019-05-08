@@ -18,7 +18,7 @@ Truesec Detect EventLog Parser: display and parse entries from event logs, local
         -e <expr>     :  Only show events in which any of the strings include 'expr' (case insensitive).  
         -n <num>      :  Only show <num> number of events.  
         
-    Example 1: eventlog_tool -l c:\\temp\\sec.evtx -i 4624  
+    Example 1: eventlog_tool -l c:\logs\sec.evtx -i 4624  
 
     Example 2: eventlog_tool -L Security -i 4688 -e powershell.exe  
 
