@@ -1,4 +1,4 @@
-**Truesec Eventlog parser**  
+**Truesec Windows Eventlog parser**  
   
 *Windows commandline utility written in C. Tested on Windows Vista / Server 2008 and later*  
   
