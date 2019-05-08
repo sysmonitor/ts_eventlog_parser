@@ -22,7 +22,7 @@ Truesec Detect EventLog Parser: display and parse entries from event logs, local
 
     Example 2: eventlog_tool -L Security -i 4688 -e powershell.exe  
 
-    Example 3: eventlog_tool -L \"Windows Powershell\" -i 600  
+    Example 3: eventlog_tool -L "Windows Powershell" -i 600  
 
 The tool should be able to work with any exported or copied event log in .evtx-format on disk as well as with the normal live Application, System, Security or Windows PowerShell logs.  
       
