@@ -447,7 +447,7 @@ DWORD DumpRecordsInBuffer(PBYTE pBuffer, DWORD dwBytesRead, wchar_t *szProviderN
 
 void print_usage()
 {
-	wprintf(L"\nTrusec Detect EventLog Parser: display and parse entries from event logs, locally or remotely, from live logs or logfiles on disk.\n");
+	wprintf(L"\nTruesec Detect EventLog Parser: display and parse entries from event logs, locally or remotely, from live logs or logfiles on disk.\n");
 	wprintf(L"\nUsage: eventlog_tool [-h] [-p] [-c] [-u] <-l <logfile> | -L <logname>> [-s <host> -i <eventID> -t <type> -e <expr> -n <num>]\n");
 	wprintf(L"\n  -h            :  This help.");
 	wprintf(L"\n  -p            :  Do not display any entries, but instead dump a list of interesting Event IDs.");
