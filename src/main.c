@@ -1,7 +1,8 @@
 // Trusec Detect Eventlog Parser
 // www.truesec.se
 // Based on code from https://docs.microsoft.com/en-us/windows/desktop/EventLog/querying-for-event-source-messages
-// Modified a bit
+// Can work with both live logs and logs copied from another system
+
 #include <windows.h>
 #include <Shlwapi.h>
 #include <stdio.h>
