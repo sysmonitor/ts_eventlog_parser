@@ -1,8 +1,8 @@
-**Truesec Windows Eventlog parser**  
+**Windows Eventlog parser**  
   
 *Windows commandline utility written in C. Tested on Windows Vista / Server 2008 and later*  
   
-Truesec Detect EventLog Parser: display and parse entries from event logs, locally or remotely, from live logs or logfiles on disk. 
+EventLog Parser: display and parse entries from event logs, locally or remotely, from live logs or logfiles on disk. 
   
     Usage: eventlog_parser [-h] [-p] [-c] [-u] <-l <logfile> | -L <logname>> [-s <host> -i <eventID> -t <type> -e <expr> -n <num>]  
       
