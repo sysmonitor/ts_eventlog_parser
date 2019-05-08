@@ -1,10 +1,10 @@
-**Truesec Windows Eventlog parser**  
+**Windows Eventlog parser**  
   
 *Windows commandline utility written in C. Tested on Windows Vista / Server 2008 and later*  
   
-Truesec Detect EventLog Parser: display and parse entries from event logs, locally or remotely, from live logs or logfiles on disk.\n"); 
+EventLog Parser: display and parse entries from event logs, locally or remotely, from live logs or logfiles on disk. 
   
-    Usage: eventlog_parser [-h] [-p] [-c] [-u] <-l <logfile> | -L <logname>> [-s <host> -i <eventID> -t <type> -e <expr> -n <num>]\n");  
+    Usage: eventlog_parser [-h] [-p] [-c] [-u] <-l <logfile> | -L <logname>> [-s <host> -i <eventID> -t <type> -e <expr> -n <num>]  
       
         -h            :  This help.  
         -p            :  Do not display any entries, but instead dump a list of interesting Event IDs.  
@@ -18,7 +18,7 @@ Truesec Detect EventLog Parser: display and parse entries from event logs, local
         -e <expr>     :  Only show events in which any of the strings include 'expr' (case insensitive).  
         -n <num>      :  Only show <num> number of events.  
         
-    Example 1: eventlog_tool -l c:\\temp\\sec.evtx -i 4624  
+    Example 1: eventlog_tool -l c:\logs\sec.evtx -i 4624  
 
     Example 2: eventlog_tool -L Security -i 4688 -e powershell.exe  
 
