@@ -1,6 +1,5 @@
-// Trusec Detect Eventlog Parser
+// TS Detect Eventlog Parser
 // www.truesec.se
-// Based on code from https://docs.microsoft.com/en-us/windows/desktop/EventLog/querying-for-event-source-messages
 // Can work with both live logs and logs copied from another system
 
 #include <windows.h>
@@ -12,7 +11,7 @@
 #define MAX_TIMESTAMP_LEN       23 + 1   // yyyy-mm-dd hh:mm:ss.mmm
 #define MAX_RECORD_BUFFER_SIZE  0x10000  // 64K
 
-CONST LPWSTR pEventTypeNames[] = { L"Error", L"Warning", L"Informational", L"Audit Success", L"Audit Failure" };
+CONST wchar_t *pEventTypeNames[] = { L"Error", L"Warning", L"Informational", L"Audit Success", L"Audit Failure" };
 DWORD nEvents = 0;
 BOOL bNumNotExceeded = TRUE, bCSVOutput = FALSE, bUTC = FALSE;
 wchar_t fields[50][8192];
@@ -306,14 +305,14 @@ DWORD GetEventTypeName(DWORD EventType)
 	return index;
 }
 
-DWORD DumpRecordsInBuffer(PBYTE pBuffer, DWORD dwBytesRead, wchar_t *szProviderName, BOOL bFilterID,
+DWORD DumpRecordsInBuffer(u_char *pBuffer, DWORD dwBytesRead, wchar_t *szProviderName, BOOL bFilterID,
 	DWORD dwID, BOOL bFilterType, DWORD dwType, wchar_t *szExpr, DWORD dwNum)
 {
 	DWORD status = ERROR_SUCCESS, dwEventID, dwStrings, dwSourceLen;
-	PBYTE pRecord = pBuffer;
-	PBYTE pEndOfRecords = pBuffer + dwBytesRead;
-	LPWSTR pMessage = NULL;
-	LPWSTR pFinalMessage = NULL;
+	u_char *pRecord = pBuffer;
+	u_char *pEndOfRecords = pBuffer + dwBytesRead;
+	wchar_t *pMessage = NULL;
+	wchar_t *pFinalMessage = NULL;
 	wchar_t TimeStamp[MAX_TIMESTAMP_LEN + 1];
 	wchar_t szEventMessage[MAX_PATH];
 	wchar_t string_data[MAX_RECORD_BUFFER_SIZE];
@@ -447,7 +446,7 @@ DWORD DumpRecordsInBuffer(PBYTE pBuffer, DWORD dwBytesRead, wchar_t *szProviderN
 
 void print_usage()
 {
-	wprintf(L"\nTruesec Detect EventLog Parser: display and parse entries from event logs, locally or remotely, from live logs or logfiles on disk.\n");
+	wprintf(L"\nTS EventLog Parser: display and parse entries from event logs, locally or remotely, from live logs or logfiles on disk.\n");
 	wprintf(L"\nUsage: eventlog_tool [-h] [-p] [-c] [-u] <-l <logfile> | -L <logname>> [-s <host> -i <eventID> -t <type> -e <expr> -n <num>]\n");
 	wprintf(L"\n  -h            :  This help.");
 	wprintf(L"\n  -p            :  Do not display any entries, but instead dump a list of interesting Event IDs.");
@@ -550,8 +549,8 @@ void wmain(int argc, wchar_t **argv)
 	DWORD dwBytesToRead = 0;
 	DWORD dwBytesRead = 0, dwEventID = 0, dwType;
 	DWORD dwMinimumBytesToRead = 0, dwNum = 0;
-	PBYTE pBuffer = NULL;
-	PBYTE pTemp = NULL;
+	u_char *pBuffer = NULL;
+	u_char *pTemp = NULL;
 	wchar_t *szLogName = NULL, *szHost = NULL, *szExpr = NULL;
 	BOOL bLogFile = FALSE, bLogName = FALSE, bFilterType = FALSE;
 	BOOL bFilterEventID = FALSE;
@@ -684,22 +683,14 @@ void wmain(int argc, wchar_t **argv)
 		goto cleanup;
 	}
 
-	// Allocate an initial block of memory used to read event records. The number 
-	// of records read into the buffer will vary depending on the size of each event.
-	// The size of each event will vary based on the size of the user-defined
-	// data included with each event, the number and length of insertion 
-	// strings, and other data appended to the end of the event record.
 	dwBytesToRead = MAX_RECORD_BUFFER_SIZE;
-	pBuffer = (PBYTE)malloc(dwBytesToRead);
+	pBuffer = (u_char*)malloc(dwBytesToRead);
 	if (NULL == pBuffer)
 	{
 		ShowErrorMessage(L"malloc");
 		goto cleanup;
 	}
 
-	// Read blocks of records until you reach the end of the log or an 
-	// error occurs. The records are read from newest to oldest. If the buffer
-	// is not big enough to hold a complete event record, reallocate the buffer.
 	while (ERROR_SUCCESS == status && bNumNotExceeded)
 	{
 		if (!ReadEventLogW(hEventLog,
@@ -715,10 +706,10 @@ void wmain(int argc, wchar_t **argv)
 			{
 				status = ERROR_SUCCESS;
 
-				pTemp = (PBYTE)realloc(pBuffer, dwMinimumBytesToRead);
+				pTemp = (u_char*)realloc(pBuffer, dwMinimumBytesToRead);
 				if (NULL == pTemp)
 				{
-					wprintf(L"Failed to reallocate the memory for the record buffer (%d bytes).\n", dwMinimumBytesToRead);
+					ShowErrorMessage(L"realloc");
 					goto cleanup;
 				}
 
